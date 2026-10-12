@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BrandSeeder::class,
             LaptopSeeder::class,
+            LaptopConditionSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

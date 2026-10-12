@@ -4,6 +4,10 @@
     </x-slot>
 
     <div class="py-8">
+        <div class="mx-auto max-w-5xl sm:px-6 lg:px-8">
+            <x-flash-message />
+        </div>
+
         <div class="mx-auto grid max-w-5xl gap-8 sm:px-6 md:grid-cols-2 lg:px-8">
             <div class="overflow-hidden rounded-lg bg-gray-100 shadow">
                 @if ($laptop->image_url)
@@ -43,7 +47,7 @@
                     @endif
                 </div>
 
-                @if ($laptop->status === \App\Enums\LaptopStatus::Tersedia && Route::has('transactions.create'))
+                @if ($laptop->status === \App\Enums\LaptopStatus::Tersedia && auth()->user()->can('create', \App\Models\Transaction::class))
                     <a href="{{ route('transactions.create', $laptop) }}"
                        class="block rounded-md bg-indigo-600 px-4 py-2 text-center font-semibold text-white hover:bg-indigo-500">
                         Booking Sekarang

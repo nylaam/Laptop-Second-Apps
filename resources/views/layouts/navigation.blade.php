@@ -27,6 +27,14 @@
                         <x-nav-link :href="route('conditions.index')" :active="request()->routeIs('conditions.*')">
                             {{ __('Inspeksi') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
+                            {{ __('Transaksi') }}
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
+                            {{ __('Transaksi Saya') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -102,6 +110,14 @@
 
                 <x-responsive-nav-link :href="route('conditions.index')" :active="request()->routeIs('conditions.*')">
                     {{ __('Inspeksi') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
+                    {{ __('Transaksi') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
+                    {{ __('Transaksi Saya') }}
                 </x-responsive-nav-link>
             @endif
         </div>
