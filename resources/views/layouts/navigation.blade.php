@@ -5,7 +5,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto text-gray-800" />
                     </a>
                 </div>
 
@@ -18,6 +18,10 @@
                     @if (Auth::user()->isAdmin())
                     <x-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
                         {{ __('Merek') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('laptops.index')" :active="request()->routeIs('laptops.*')">
+                        {{ __('Inventaris') }}
                     </x-nav-link>
                     @endif
                 </div>
@@ -79,6 +83,10 @@
             @if (Auth::user()->isAdmin())
             <x-responsive-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
                 {{ __('Merek') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('laptops.index')" :active="request()->routeIs('laptops.*')">
+                {{ __('Inventaris') }}
             </x-responsive-nav-link>
             @endif
         </div>
