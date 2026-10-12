@@ -16,3 +16,28 @@ document.addEventListener('change', (event) => {
         event.target.form?.submit();
     }
 });
+
+//  <input type="file" data-image-preview="#selector-gambar">  untuk preview foto sebelum upload
+document.addEventListener('change', (event) => {
+    const input = event.target;
+
+    if (!input.matches('[data-image-preview]')) {
+        return;
+    }
+
+    const preview = document.querySelector(input.dataset.imagePreview);
+    const file = input.files?.[0];
+
+    if (!preview || !file || !file.type.startsWith('image/')) {
+        return;
+    }
+
+    if (preview.dataset.objectUrl) {
+        URL.revokeObjectURL(preview.dataset.objectUrl);
+    }
+
+    preview.dataset.objectUrl = URL.createObjectURL(file);
+    preview.src = preview.dataset.objectUrl;
+    preview.classList.remove('hidden');
+    preview.parentElement?.querySelector('[data-image-preview-empty]')?.classList.add('hidden');
+});
