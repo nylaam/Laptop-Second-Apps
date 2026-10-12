@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * CATATAN TIM: model ini milik Anggota 1 (Laptop & Inventory).
- * Versi di bawah adalah versi minimal agar modul Katalog bisa berjalan.
- * Saat merge, pertahankan relasi dan scope katalog (search, ofBrand, available).
+ * Model Laptop & Inventory.
+ * Scope search, ofBrand, available dipakai modul Katalog
  */
 class Laptop extends Model
 {
@@ -33,8 +33,6 @@ class Laptop extends Model
             'status' => LaptopStatus::class,
         ];
     }
-
-    // ---- Relasi ----
 
     public function brand(): BelongsTo
     {
@@ -65,6 +63,13 @@ class Laptop extends Model
         return $query->when($brandId, fn (Builder $q) => $q->where('brand_id', $brandId));
     }
 
+    public function scopeOfStatus(Builder $query, ?string $status): Builder
+    {
+        $status = LaptopStatus::tryFrom((string) $status);
+
+        return $query->when($status, fn (Builder $q) => $q->where('status', $status));
+    }
+
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('status', LaptopStatus::Tersedia);
@@ -77,6 +82,14 @@ class Laptop extends Model
 
     protected function imageUrl(): Attribute
     {
-        return Attribute::get(fn () => $this->image ? Storage::url($this->image) : null);
+        
+        return Attribute::get(fn () => $this->image ? asset('storage/'.ltrim($this->image, '/')) : null);
+    }
+
+    /** Laptop yang punya riwayat transaksi tidak boleh dihapus. */
+    public function hasTransactionHistory(): bool
+    {
+        // Query tabel langsung agar tidak bergantung pada model Transaction.
+        return DB::table('transactions')->where('laptop_id', $this->getKey())->exists();
     }
 }
